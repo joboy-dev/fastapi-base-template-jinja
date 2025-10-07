@@ -1,1 +1,1 @@
-# website-vulnerability-scanner
+# FastAPI Base Template with Jinja Support
