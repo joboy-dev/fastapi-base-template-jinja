@@ -32,10 +32,6 @@ class UserService:
     ):
         """Creates a new user"""
         
-        _, _, count = User.fetch_by_field(db=db, paginate=False, is_admin=is_admin)
-        if count > 0 and is_admin == True:
-            raise HTTPException(400, 'An admin account already exists for this server')
-        
         email = payload.get('email').lower().strip()
         user_with_email_exists = User.fetch_one_by_field(db, throw_error=False, email=email)
         if user_with_email_exists:

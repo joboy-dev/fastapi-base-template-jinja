@@ -34,12 +34,6 @@ async def register(
         db (Session, optional): Database session. Defaults to Depends(get_db).
     """
     
-    query = db.query(User).filter(User.is_admin == True)
-    count = query.count()
-    if count > 0:
-        flash(request, 'Request access to the monitoring dashboard or login to your account', MessageCategory.INFO)
-        return RedirectResponse(url="/auth/request-access", status_code=303)
-    
     form = build_form(
         title='Register Account',
         subtitle='Create an account to get started',
@@ -139,12 +133,6 @@ async def request_access(
         db (Session, optional): _description_. Defaults to Depends(get_db).
     """
     
-    query = db.query(User)
-    count = query.count()
-    if count == 0:
-        flash(request, 'No account found. Please register to continue', MessageCategory.INFO)
-        return RedirectResponse(url="/auth/register", status_code=303)
-    
     form = build_form(
         title='Request Administrator Access',
         subtitle='Request access to the monitoring dashboard',
@@ -222,13 +210,6 @@ async def login(
         payload (auth_schemas.LoginSchema): Contains email and password
         db (Session, optional): _description_. Defaults to Depends(get_db).
     """
-    
-    query = db.query(User).filter(User.is_admin == True)
-    count = query.count()
-    logger.info(f'Existing admin user count: {count}')
-    if count == 0:
-        flash(request, 'No account found. Please register to continue', MessageCategory.INFO)
-        return RedirectResponse(url="/auth/register", status_code=303)
     
     form = build_form(
         title='Administrator Access',
